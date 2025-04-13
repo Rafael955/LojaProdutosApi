@@ -27,7 +27,8 @@ namespace ProdutosApp.Api.Controllers
         {
             try
             {
-
+                var userName = User.Identity.Name.ToString();
+                
                 var response = _produtoService.CriarProduto(request);
 
                 #region Cadastrando produto na fila da mensageria 
@@ -41,6 +42,7 @@ namespace ProdutosApp.Api.Controllers
                     Preco = response.Preco,
                     Quantidade = response.Quantidade,
                     Fornecedor = response.NomeFornecedor,
+                    Usuario = userName,
                     CriadoEm = DateTime.Now
                 });
 

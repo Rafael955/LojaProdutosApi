@@ -25,6 +25,9 @@ namespace ProdutosApp.Domain.Entities
         [BsonElement("descricao")]
         public string? Descricao { get; set; }
 
+        [BsonElement("usuario")]
+        public string? Usuario { get; set; }
+
         [BsonElement("datahoragravacao")]
         public DateTime? DataHoraGravacao { get; set; }
 

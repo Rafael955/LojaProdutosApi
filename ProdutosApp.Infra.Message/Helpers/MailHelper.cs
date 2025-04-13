@@ -25,11 +25,12 @@ namespace ProdutosApp.Infra.Message.Helpers
         {
             //escrevendp p assunto do email
             var subject = "Produto cadastrado no sistema com sucesso - LojaProdutosApp";
-
+            var userName = produto.Usuario == null ? "Usuário" : produto.Usuario;
+            
             //escrevendo o corpo do email
             var body = $@"
                 <h2>Produto cadastrado com sucesso!</h2>
-                <h3>Olá, {produto.Usuario}, o produto {produto.Nome} foi cadastrado com sucesso no sistema.</h3>
+                <h3>Olá, {userName}, o produto {produto.Nome} foi cadastrado com sucesso no sistema.</h3>
                 <p>Dados do produto:</p>
                 <ul>
                     <li>ID: {produto.Id}</li>

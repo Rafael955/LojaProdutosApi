@@ -68,6 +68,7 @@ namespace ProdutosApp.Infra.Message.Consumers
                     Produto = produtoCriado.Nome,
                     Fornecedor = produtoCriado.Fornecedor,
                     Descricao = "Produto cadastrado com sucesso",
+                    Usuario = produtoCriado.Usuario,
                     DataHoraGravacao = DateTime.Now
                 });
 

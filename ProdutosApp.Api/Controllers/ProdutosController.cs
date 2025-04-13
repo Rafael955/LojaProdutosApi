@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProdutosApp.Domain.Dtos.Requests;
@@ -28,6 +29,7 @@ namespace ProdutosApp.Api.Controllers
             try
             {
                 var userName = User.Identity.Name.ToString();
+                var email = User.FindFirstValue(ClaimTypes.Email);
                 
                 var response = _produtoService.CriarProduto(request);
 
@@ -43,6 +45,7 @@ namespace ProdutosApp.Api.Controllers
                     Quantidade = response.Quantidade,
                     Fornecedor = response.NomeFornecedor,
                     Usuario = userName,
+                    Email = email,
                     CriadoEm = DateTime.Now
                 });
 

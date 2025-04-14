@@ -20,6 +20,8 @@ namespace ProdutosApp.Infra.Message.Models
 
         public string? Usuario { get; set; }
 
+        public string? Email { get; set; }
+
         public DateTime? CriadoEm { get; set; }
     }
 }

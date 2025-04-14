@@ -60,7 +60,7 @@ namespace ProdutosApp.Domain.Services
 
             var fornecedorSearch = _fornecedorRepository.GetByName(request.Nome);
 
-            if (fornecedorSearch != null)
+            if (fornecedorSearch != null && fornecedorSearch.Id != id)
                 throw new ApplicationException("Já existe um fornecedor cadastrado com este nome no sistema.");
 
             #endregion

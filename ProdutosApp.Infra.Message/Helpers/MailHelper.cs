@@ -26,7 +26,7 @@ namespace ProdutosApp.Infra.Message.Helpers
             //escrevendp p assunto do email
             var subject = "Produto cadastrado no sistema com sucesso - LojaProdutosApp";
             var userName = produto.Usuario == null ? "Usuário" : produto.Usuario;
-            
+
             //escrevendo o corpo do email
             var body = $@"
                 <h2>Produto cadastrado com sucesso!</h2>
@@ -47,7 +47,7 @@ namespace ProdutosApp.Infra.Message.Helpers
             };
 
             //Configurando o remetente, destinatário, assunto e corpo da mensagem
-            var mailMessage = new MailMessage(_from, "rafaelcaffonso2@gmail.com", subject, body);
+            var mailMessage = new MailMessage(_from, produto.Email, subject, body);
 
             //Configurando o corpo da mensagem para HTML
             mailMessage.IsBodyHtml = true;

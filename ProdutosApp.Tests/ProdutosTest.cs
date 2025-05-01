@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ProdutosApp.Domain.Dtos.Requests;
 using ProdutosApp.Domain.Dtos.Responses;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace ProdutosApp.Tests
@@ -14,11 +15,38 @@ namespace ProdutosApp.Tests
         [Fact]
         public void CreateProduct_Successfully()
         {
+            var externalClient = new HttpClient();
+            externalClient.BaseAddress = new Uri("http://localhost:5249"); // ou a porta correta da API externa
+
+            //criando request para login
+            var loginRequest = new
+            {
+                Email = "admin@lojaprodutosapp.com",
+                Senha = "Admin@123"
+            };
+
+            //serializar os dados da requisição em JSON
+            var jsonLoginRequest = new StringContent(JsonConvert.SerializeObject(loginRequest), Encoding.UTF8, "application/json");
+
+            var login_response = externalClient.PostAsync("/api/usuarios/login-usuario", jsonLoginRequest)?.Result; //json
+
+            //capturando a resposta obtida pela API
+            var login_content = login_response.Content.ReadAsStringAsync()?.Result; //json
+
+            //deserializando o JSON de resposta retornado pela API
+            dynamic loginUserDto = JsonConvert.DeserializeObject<dynamic>(login_content);
+
             //criando a requisição / solicitação para a API
             var client = new WebApplicationFactory<Program>().CreateClient();
 
-            //pegando uma categoria qualquer para teste
+            //incluindo o token no Header do request
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginUserDto.token.ToString());
+
+            //pegando um fornecedor qualquer para teste
             var response = client.GetAsync("/api/fornecedores/listar-fornecedores").Result;
+
+            //verificando se a API retornou código 200(HTTP OK)
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             //capturando a resposta obtida pela API
             var content = response.Content.ReadAsStringAsync()?.Result; //json
@@ -39,7 +67,7 @@ namespace ProdutosApp.Tests
                 .RuleFor(p => p.FornecedorId, fornecedorEscolhido.Id)
                 .Generate();
 
-            //serailizar os dados da requisição em JSON
+            //serializar os dados da requisição em JSON
             var jsonRequest = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
             //executando a chamada para o endpoint de cadastro de produto
@@ -71,11 +99,38 @@ namespace ProdutosApp.Tests
         [Fact]
         public void UpdateProduct_Successfully()
         {
+            var externalClient = new HttpClient();
+            externalClient.BaseAddress = new Uri("http://localhost:5249"); // ou a porta correta da API externa
+
+            //criando request para login
+            var loginRequest = new
+            {
+                Email = "admin@lojaprodutosapp.com",
+                Senha = "Admin@123"
+            };
+
+            //serializar os dados da requisição em JSON
+            var jsonLoginRequest = new StringContent(JsonConvert.SerializeObject(loginRequest), Encoding.UTF8, "application/json");
+
+            var login_response = externalClient.PostAsync("/api/usuarios/login-usuario", jsonLoginRequest)?.Result; //json
+
+            //capturando a resposta obtida pela API
+            var login_content = login_response.Content.ReadAsStringAsync()?.Result; //json
+
+            //deserializando o JSON de resposta retornado pela API
+            dynamic loginUserDto = JsonConvert.DeserializeObject<dynamic>(login_content);
+
             //criando a requisição / solicitação para a API
             var client = new WebApplicationFactory<Program>().CreateClient();
 
+            //incluindo o token no Header do request
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginUserDto.token.ToString());
+
             //pegando uma categoria qualquer para teste
             var response = client.GetAsync("/api/fornecedores/listar-fornecedores").Result;
+
+            //verificando se a API retornou código 200(HTTP OK)
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             //capturando a resposta obtida pela API
             var content = response.Content.ReadAsStringAsync()?.Result; //json
@@ -116,6 +171,9 @@ namespace ProdutosApp.Tests
 
             //recuperando produto cadastrado
             response = client.GetAsync($"/api/produtos/obter-produto/{produto.Id}")?.Result; //json
+            
+            //verificando se a API retornou código 200(HTTP OK)
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             //capturando a resposta obtida pela API
             content = response.Content.ReadAsStringAsync()?.Result; //json
@@ -162,11 +220,38 @@ namespace ProdutosApp.Tests
         [Fact]
         public void CreateProduct_ProductNameAlreadyRegistered()
         {
+            var externalClient = new HttpClient();
+            externalClient.BaseAddress = new Uri("http://localhost:5249"); // ou a porta correta da API externa
+
+            //criando request para login
+            var loginRequest = new
+            {
+                Email = "admin@lojaprodutosapp.com",
+                Senha = "Admin@123"
+            };
+
+            //serializar os dados da requisição em JSON
+            var jsonLoginRequest = new StringContent(JsonConvert.SerializeObject(loginRequest), Encoding.UTF8, "application/json");
+
+            var login_response = externalClient.PostAsync("/api/usuarios/login-usuario", jsonLoginRequest)?.Result; //json
+
+            //capturando a resposta obtida pela API
+            var login_content = login_response.Content.ReadAsStringAsync()?.Result; //json
+
+            //deserializando o JSON de resposta retornado pela API
+            dynamic loginUserDto = JsonConvert.DeserializeObject<dynamic>(login_content);
+
             //criando a requisição / solicitação para a API
             var client = new WebApplicationFactory<Program>().CreateClient();
 
+            //incluindo o token no Header do request
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginUserDto.token.ToString());
+
             //pegando uma categoria qualquer para teste
             var response = client.GetAsync("/api/fornecedores/listar-fornecedores").Result;
+
+            //verificando se a API retornou código 200(HTTP OK)
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             //capturando a resposta obtida pela API
             var content = response.Content.ReadAsStringAsync()?.Result; //json

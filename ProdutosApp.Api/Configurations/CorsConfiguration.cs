@@ -11,7 +11,7 @@ public static class CorsConfiguration
         {
             options.AddPolicy(name: "DefaultPolicy", policy =>
             {
-                policy.WithOrigins("http://localhost:4200") // URL da aplicação Angular
+                policy.WithOrigins("http://localhost:4200", "http://localhost:5051") // URL da aplicação Angular e aplicação Blazor
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });

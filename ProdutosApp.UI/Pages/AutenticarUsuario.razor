@@ -1,0 +1,105 @@
+﻿@* Mapeamento da rota do componente *@
+@page "/"
+
+<div class="d-flex align-items-baseline justify-content-center vh-100 bg-light">
+    <div class="card shadow p-4" style="width: 22rem;">
+        <div class="card-body">
+            <img src="logo.png" width="100%" />
+            <h3 class="card-title text-center mb-2 mt-2">Autenticação de usuários</h3>
+
+            <div class="text-danger text-center">
+                <strong></strong>
+            </div>
+
+            @if (!string.IsNullOrEmpty(mensagemErro))
+            {
+                <div class="alert alert-danger mb-2 alert-dismissible" role="alert">
+                    <strong>@mensagemErro</strong>
+                    <button @onclick="FecharJanelaErro" type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+            }
+
+            <EditForm Model="@model" OnValidSubmit="@OnSubmit">
+
+                @* Habilitar e executar as validações do DataAnnotations *@
+                <DataAnnotationsValidator />
+
+                <div class="mb-2">
+                    <label for="email" class="form-label">Email de acesso</label>
+                    <InputText type="email" class="form-control" id="email" placeholder="Digite seu email" @bind-value="model.Email" />
+                    <div class="text-danger">
+                        <ValidationMessage For="@(() => model.Email)" />
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="senha" class="form-label">Senha de acesso</label>
+                    <InputText type="password" class="form-control" id="senha" placeholder="Digite sua senha" @bind-Value="model.Senha" />
+                    <div class="text-danger">
+                        <ValidationMessage For="@(() => model.Senha)" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    Entrar
+                </button>
+
+                <NavLink href="criar-usuario" class="btn btn-secondary w-100 mt-2">
+                    Crie sua conta de usuário
+                </NavLink>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@using ProdutosApp.UI.Configurations
+@using ProdutosApp.UI.Models
+@using Newtonsoft.Json
+@using Blazored.SessionStorage
+
+@inject NavigationManager Navigation
+@inject ISessionStorageService Session
+@inject IHttpClientFactory _httpClientFactory;
+
+@code {
+    //criando um objeto da classe de modelo de dados
+    AutenticarUsuarioModel model = new AutenticarUsuarioModel();
+
+    string mensagemErro = string.Empty;
+
+    //função executada no evento SUBMIT do formulário
+    public async Task OnSubmit()
+    {
+        try
+        {
+            using (HttpClient httpClient = _httpClientFactory.CreateClient(HttpClientName.UsersAPI))
+            {
+                var response = await httpClient.PostAsJsonAsync("api/usuarios/login-usuario", model);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var usuario = JsonConvert.DeserializeObject<UsuarioLogadoModel>(content);
+
+                    await Session.SetItemAsync("usuario", usuario);
+
+                    Navigation.NavigateTo("/consultar-produtos", true);
+                }
+                else
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var error = JsonConvert.DeserializeObject<ErrorModel>(content);
+
+                    mensagemErro = error.Message;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = ex.Message;
+        }
+    }
+
+    public async Task FecharJanelaErro()
+    {
+        mensagemErro = string.Empty;
+    }
+}

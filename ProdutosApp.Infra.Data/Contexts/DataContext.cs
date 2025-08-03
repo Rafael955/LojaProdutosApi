@@ -14,7 +14,7 @@ namespace ProdutosApp.Infra.Data.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //adicionando a connectionString
-            optionsBuilder.UseSqlServer("Data Source=\"localhost, 1434\";Initial Catalog=master;User ID=sa;Password=BatatinhaFrita123$;Encrypt=False");
+            optionsBuilder.UseSqlServer("Data Source=\"localhost, 1434\";Initial Catalog=master;User ID=sa;Password=ProjetoLojaApp123$;Encrypt=False");
         }
 
         //método para adionar cada classe de mapeamento do projeto

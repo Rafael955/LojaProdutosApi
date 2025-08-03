@@ -9,31 +9,68 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Autenticar Usuário
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+
+        @if (isAuthenticated)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="consultar-produtos">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Consultar Produtos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="cadastrar-produto">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cadastrar Produto
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="consultar-fornecedores">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Consultar Fornecedores
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="cadastrar-fornecedor">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cadastrar Fornecedor
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Autenticar Usuário
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="criar-usuario">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Criar Usuário
+                </NavLink>
+            </div>
+        }
+
     </nav>
 </div>
 
+@using Blazored.SessionStorage
+@using ProdutosApp.UI.Models
+
+@inject ISessionStorageService Session
+
 @code {
     private bool collapseNavMenu = true;
+    private bool isAuthenticated = false;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    //evento executado no momento em que o componente é carregado
+    protected override async Task OnInitializedAsync()
+    {
+        var usuario = await Session.GetItemAsync<UsuarioLogadoModel>("usuario");
+
+        isAuthenticated = usuario != null;
     }
 }

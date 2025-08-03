@@ -1,15 +1,12 @@
 ﻿@* Mapeamento da rota do componente *@
 @page "/"
+@page "/autenticar-usuario"
 
 <div class="d-flex align-items-baseline justify-content-center vh-100 bg-light">
     <div class="card shadow p-4" style="width: 22rem;">
         <div class="card-body">
             <img src="logo.png" width="100%" />
             <h3 class="card-title text-center mb-2 mt-2">Autenticação de usuários</h3>
-
-            <div class="text-danger text-center">
-                <strong></strong>
-            </div>
 
             @if (!string.IsNullOrEmpty(mensagemErro))
             {

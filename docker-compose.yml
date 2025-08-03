@@ -6,7 +6,7 @@ services:
     container_name: produtosapp_sqlserver
     restart: always
     environment:
-      SA_PASSWORD: "BatatinhaFrita123$"
+      SA_PASSWORD: "ProjetoLojaApp123$"
       ACCEPT_EULA: "Y"
     ports:
       - "1434:1433"

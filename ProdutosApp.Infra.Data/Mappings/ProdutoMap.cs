@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProdutosApp.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProdutosApp.Infra.Data.Mappings
 {
@@ -37,6 +32,9 @@ namespace ProdutosApp.Infra.Data.Mappings
             builder.Property(p => p.FornecedorId)
                 .HasColumnName("FORNECEDOR_ID")
                 .IsRequired();
+
+            builder.Property(p => p.Imagem)
+                .HasColumnName("IMAGEM");
 
             builder.HasIndex(p => p.Nome).IsUnique();
         }

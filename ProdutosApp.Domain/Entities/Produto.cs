@@ -16,6 +16,8 @@ namespace ProdutosApp.Domain.Entities
 
         public int? Quantidade { get; set; }
 
+        public string? Imagem { get; set; }
+
         #region Relacionamentos
 
         public Guid? FornecedorId { get; set; }

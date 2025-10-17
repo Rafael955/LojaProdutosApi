@@ -22,5 +22,7 @@ namespace ProdutosApp.Domain.Dtos.Responses
         public Guid? FornecedorId { get; set; }
 
         public string? NomeFornecedor { get; set; }
+
+        public string? ImageBase64 { get; set; }
     }
 }

@@ -53,7 +53,8 @@ namespace ProdutosApp.Domain.Services
                 Nome = request.Nome,
                 Preco = request.Preco,
                 Quantidade = request.Quantidade,
-                FornecedorId = request.FornecedorId
+                FornecedorId = request.FornecedorId,
+                Imagem = request.ImageBase64
             };
 
             #region Validações dados do produto
@@ -108,6 +109,8 @@ namespace ProdutosApp.Domain.Services
             produto.Quantidade = request.Quantidade;
             produto.FornecedorId = request.FornecedorId;
             produto.Fornecedor = null;
+            produto.Imagem = request.ImageBase64;
+
 
             #region Validações dados do produto
 
@@ -178,7 +181,8 @@ namespace ProdutosApp.Domain.Services
                 FornecedorId = produto.FornecedorId,
                 NomeFornecedor = produto.Fornecedor.Nome,
                 Preco = produto.Preco,
-                Quantidade = produto.Quantidade
+                Quantidade = produto.Quantidade,
+                ImageBase64 = produto.Imagem
             };
         }
     }

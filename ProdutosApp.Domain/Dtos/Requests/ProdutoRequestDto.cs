@@ -16,5 +16,7 @@ namespace ProdutosApp.Domain.Dtos.Requests
         public int? Quantidade { get; set; }
 
         public Guid? FornecedorId { get; set; }
+
+        public string? ImageBase64 { get; set; }
     }
 }
